@@ -65,6 +65,7 @@ public class UploadWorker extends ListenableWorker implements CountProgressListe
   private static final int DEFAULT_ERROR_STATUS_CODE = 500;
 
   private String tag;
+  private String contentType;
   private Call call;
   private boolean isCancelled = false;
 
@@ -142,6 +143,12 @@ public class UploadWorker extends ListenableWorker implements CountProgressListe
         files = gson.fromJson(filesJson, fileItemType);
       }
 
+      //get content-type from header
+      headers.forEach((key,value) -> {
+        if(key.toString().contentEquals("content-type")){
+          contentType = value.toString();
+        }
+      });
       final RequestBody innerRequestBody;
 
       if (isBinaryUpload) {
@@ -159,7 +166,7 @@ public class UploadWorker extends ListenableWorker implements CountProgressListe
         }
 
         String mimeType = GetMimeType(item.getPath());
-        MediaType contentType = MediaType.parse(mimeType);
+        // MediaType contentType = MediaType.parse(mimeType);
         innerRequestBody = RequestBody.create(file, contentType);
       } else {
         MultipartBody.Builder formRequestBuilder = prepareRequest(parameters, null);
