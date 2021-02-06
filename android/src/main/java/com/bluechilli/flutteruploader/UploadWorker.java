@@ -149,6 +149,7 @@ public class UploadWorker extends ListenableWorker implements CountProgressListe
           contentType = value.toString();
         }
       });
+
       final RequestBody innerRequestBody;
 
       if (isBinaryUpload) {
@@ -167,7 +168,8 @@ public class UploadWorker extends ListenableWorker implements CountProgressListe
 
         String mimeType = GetMimeType(item.getPath());
         // MediaType contentType = MediaType.parse(mimeType);
-        innerRequestBody = RequestBody.create(file, contentType);
+        MediaType mediaContentType MediaType.parse(contentType)
+        innerRequestBody = RequestBody.create(file, mediaContentType);
       } else {
         MultipartBody.Builder formRequestBuilder = prepareRequest(parameters, null);
         int fileExistsCount = 0;
