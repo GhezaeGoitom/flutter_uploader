@@ -110,7 +110,7 @@ public class UploadWorker extends ListenableWorker implements CountProgressListe
   public Result doWorkInternal() {
     String url = getInputData().getString(ARG_URL);
     String method = getInputData().getString(ARG_METHOD);
-    int timeout = getInputData().getInt(ARG_REQUEST_TIMEOUT, 3600);
+    int timeout = getInputData().getInt(ARG_REQUEST_TIMEOUT, 36000);
     boolean isBinaryUpload = getInputData().getBoolean(ARG_BINARY_UPLOAD, false);
     String headersJson = getInputData().getString(ARG_HEADERS);
     String parametersJson = getInputData().getString(ARG_DATA);
@@ -168,7 +168,7 @@ public class UploadWorker extends ListenableWorker implements CountProgressListe
 
         String mimeType = GetMimeType(item.getPath());
         // MediaType contentType = MediaType.parse(mimeType);
-        MediaType mediaContentType MediaType.parse(contentType)
+        MediaType mediaContentType = MediaType.parse(contentType);
         innerRequestBody = RequestBody.create(file, mediaContentType);
       } else {
         MultipartBody.Builder formRequestBuilder = prepareRequest(parameters, null);
